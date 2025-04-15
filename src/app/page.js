@@ -40,6 +40,10 @@ export default function Page() {
     router.push('/editAccount');
   }
 
+  const deleteAccount = () => {
+    router.push('deleteAccount');
+  }
+
   return (
     <div>
       {loading ? (
@@ -53,7 +57,7 @@ export default function Page() {
             <button onClick={editAccount} className="bg-[#082567] text-white font-bold px-4 py-2 rounded-md w-48 text-center no-underline block">
               變更帳號資料
             </button>
-            <button href="/deleteAccount" className="bg-[#082567] text-white font-bold px-4 py-2 rounded-md w-48 text-center no-underline block">
+            <button onClick={deleteAccount} className="bg-[#082567] text-white font-bold px-4 py-2 rounded-md w-48 text-center no-underline block">
               刪除帳號
             </button>
           </div>
