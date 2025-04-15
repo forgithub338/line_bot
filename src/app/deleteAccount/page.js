@@ -41,7 +41,7 @@ export default function DeleteAccount() {
     if (!selectedGame) return
 
     try {
-      const response = await fetch('/api/editAccount', {
+      const response = await fetch('/api/deleteAccount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,12 +53,12 @@ export default function DeleteAccount() {
       })
 
       const result = await response.json()
-      alert(result.message || '更新成功！')
+      alert(result.message || '刪除成功！')
 
       // 可選：更新資料
       setnewGameName('')
     } catch (error) {
-      console.error('更新失敗:', error)
+      console.error('刪除失敗:', error)
     }
   }
 
