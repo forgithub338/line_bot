@@ -6,7 +6,7 @@ export default function EditAccount() {
   const [profile, setProfile] = useState(null)
   const [gameNames, setGameNames] = useState([])
   const [selectedGame, setSelectedGame] = useState('')
-  const [newUserName, setNewUserName] = useState('')
+  const [newGameName, setnewGameName] = useState('')
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('profile') || 'null')
@@ -38,7 +38,7 @@ export default function EditAccount() {
   }
 
   const handleUpdate = async () => {
-    if (!selectedGame || !newUserName) return
+    if (!selectedGame || !newGameName) return
 
     try {
       const response = await fetch('/api/editAccount', {
@@ -48,8 +48,8 @@ export default function EditAccount() {
         },
         body: JSON.stringify({
           userId: profile.userId,
-          gameName: selectedGame,
-          newUserName: newUserName,
+          oldGameName: selectedGame,
+          newGameName: newGameName,
         }),
       })
 
@@ -57,7 +57,7 @@ export default function EditAccount() {
       alert(result.message || '更新成功！')
 
       // 可選：更新資料
-      setNewUserName('')
+      setnewGameName('')
     } catch (error) {
       console.error('更新失敗:', error)
     }
@@ -95,8 +95,8 @@ export default function EditAccount() {
               <input
                 type="text"
                 placeholder="New user name"
-                value={newUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
+                value={newGameName}
+                onChange={(e) => setnewGameName(e.target.value)}
                 className="border rounded p-2 mt-2 block"
               />
 

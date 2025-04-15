@@ -30,15 +30,12 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  const {userId, userName, name} = await req.json();
+  const {userId, oldGameName, newGameName} = await req.json();
 
   try {
     const db = await createConnection();
-    const [nameExist] = await db.query("SELECT * FROM player WHERE gameName = ?", [name]);
-    if (nameExist.length > 0) return NextResponse.json({message: "此帳號已被創建"});
-
-    const [result] = await db.query("INSERT INTO player (userId, userName, gameName) VALUES (?, ?, ?)", [userId, userName, name])
-    return NextResponse.json({message: "成功創建帳號"})
+    const [result] = await db.query("UPDATE player SET gameName = ? Where gameName = ?", [newGameName, oldGameName])
+    return NextResponse.json({message: "成功更新帳號"})
     } catch (error) {
     console.log(`error: ${error}`)
     return NextResponse.json({message: error.message})
