@@ -1,5 +1,10 @@
 import { createConnection } from "@/../lib/connectDB"
 import { NextResponse } from "next/server";
+import { Client } from "@line/bot-sdk";
+
+const lineClient = new Client({
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN, // 放在 .env.local
+});
 
 export async function POST(req) {
   const {userId, userName, name} = await req.json();
@@ -10,6 +15,13 @@ export async function POST(req) {
     if (nameExist.length > 0) return NextResponse.json({message: "此帳號已被創建"});
 
     const [result] = await db.query("INSERT INTO player (userId, userName, gameName) VALUES (?, ?, ?)", [userId, userName, name])
+
+    const messageText = `${userName} 成功創建帳號 ${name}`;
+    await lineClient.pushMessage(userId, {
+      type: "text",
+      text: messageText,
+    });
+
     return NextResponse.json({message: "成功創建帳號"})
     } catch (error) {
     console.log(`error: ${error}`)
