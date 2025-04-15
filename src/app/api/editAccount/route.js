@@ -35,6 +35,9 @@ export async function POST(req) {
   try {
     const db = await createConnection();
     const [result] = await db.query("UPDATE player SET gameName = ? Where gameName = ?", [newGameName, oldGameName])
+
+    await db.commit();
+
     return NextResponse.json({message: "成功更新帳號"})
     } catch (error) {
     console.log(`error: ${error}`)
