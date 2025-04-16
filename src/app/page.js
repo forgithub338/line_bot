@@ -44,6 +44,9 @@ export default function Page() {
   const deleteAccount = () => {
     router.push('deleteAccount');
   }
+  const debug = () => {
+    router.push('debug')
+  }
 
   return (
     <div>
@@ -60,6 +63,9 @@ export default function Page() {
             </button>
             <button onClick={deleteAccount} className="bg-[#082567] text-white font-bold px-4 py-2 rounded-md w-48 text-center no-underline block">
               刪除帳號
+            </button>
+            <button onClick={debug} className="bg-[#082567] text-white font-bold px-4 py-2 rounded-md w-48 text-center no-underline block">
+              debug
             </button>
           </div>
         </div>

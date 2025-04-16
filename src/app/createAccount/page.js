@@ -32,15 +32,23 @@ export default function CreateAccount() {
 
       alert(data.message);
 
-      if (typeof window !== "undefined" && window.liff?.isApiAvailable('sendMessages')) {
-        await window.liff.sendMessages([
-          {
-            type: 'text',
-            text: `${profile.displayName} 成功新增帳號 ${gameName}`,
-          },
-        ]);
+      if (typeof window !== "undefined" && window.liff) {
+        const isClient = window.liff.isInClient?.();
+        const canSend = window.liff.isApiAvailable?.('sendMessages');
+  
+        if (isClient && canSend) {
+          await window.liff.sendMessages([
+            {
+              type: 'text',
+              text: `${profile.displayName} 成功新增帳號 ${gameName}`,
+            },
+          ]);
+          alert('訊息已發送 🎉');
+        } else {
+          alert(`無法發送訊息：isInClient=${isClient}, canSend=${canSend}`);
+        }
       } else {
-        alert('liff.sendMessages 不可用');
+        alert('window.liff 尚未載入');
       }
 
     } catch (error) {
