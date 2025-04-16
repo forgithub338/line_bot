@@ -30,13 +30,28 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  const {userId, gameName} = await req.json();
+  const {userName, gameName} = await req.json();
 
   try {
     const db = await createConnection();
     const [result] = await db.query("DELETE FROM player WHERE gameName = ?;", [gameName])
 
     await db.commit();
+
+    const response = await fetch('https://api.line.me/v2/bot/message/push', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.LINE_ACCESS_TOKEN}`
+      },
+      body: JSON.stringify({
+        to: "C3ec2a6b279d579771ca82d451aaf5085",
+        messages: [{
+          type: 'text',
+          text: `${userName} 成功刪除帳號 ${gameName}`
+        }]
+      })
+    })
 
     return NextResponse.json({message: "成功刪除帳號"})
     } catch (error) {

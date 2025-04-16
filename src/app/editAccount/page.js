@@ -47,7 +47,7 @@ export default function EditAccount() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: profile.userId,
+          userName: profile.displayName,
           oldGameName: selectedGame,
           newGameName: newGameName,
         }),

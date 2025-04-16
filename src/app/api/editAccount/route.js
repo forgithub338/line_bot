@@ -30,13 +30,28 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  const {userId, oldGameName, newGameName} = await req.json();
+  const {userName, oldGameName, newGameName} = await req.json();
 
   try {
     const db = await createConnection();
     const [result] = await db.query("UPDATE player SET gameName = ? Where gameName = ?", [newGameName, oldGameName])
 
     await db.commit();
+
+    const response = await fetch('https://api.line.me/v2/bot/message/push', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.LINE_ACCESS_TOKEN}`
+      },
+      body: JSON.stringify({
+        to: "C3ec2a6b279d579771ca82d451aaf5085",
+        messages: [{
+          type: 'text',
+          text: `${userName} 將帳號 ${oldGameName} 更名為 ${newGameName}`
+        }]
+      })
+    })
 
     return NextResponse.json({message: "成功更新帳號"})
     } catch (error) {

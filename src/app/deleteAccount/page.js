@@ -47,7 +47,7 @@ export default function DeleteAccount() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: profile.userId,
+          userName: profile.displayName,
           gameName: selectedGame,
         }),
       })
