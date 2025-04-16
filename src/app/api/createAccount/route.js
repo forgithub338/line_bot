@@ -18,7 +18,7 @@ export async function POST(req) {
         'Authorization': `Bearer ${process.env.LINE_ACCESS_TOKEN}`
       },
       body: JSON.stringify({
-        to: "C6fed24600ca5ed14a70c98452b817197",
+        to: "Ca7da83ce4d91d12a42990d292c131e36",
         messages: [{
           type: 'text',
           text: `${userName} 成功創建帳號 ${name}`
