@@ -23,18 +23,6 @@ export default function Page() {
           localStorage.setItem("profile", JSON.stringify(data))
         }
 
-        liff.sendMessages([
-          {
-            type: 'text',
-            text: 'Hello, World!'
-          }
-        ]).then(function(res) {
-          console.log(res)
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-
       } catch (error) {
         console.error('LIFF 初始化失敗', error);
       } finally {

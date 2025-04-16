@@ -40,11 +40,11 @@ export default function CreateAccount() {
           },
         ]);
       } else {
-        console.warn('liff.sendMessages 不可用');
+        alert('liff.sendMessages 不可用');
       }
 
     } catch (error) {
-      console.error('Error:', error);
+      alert('Error:', error);
       alert('發生錯誤，請稍後再試。');
     }
   }
