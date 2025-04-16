@@ -10,7 +10,7 @@ export default function DebugPage() {
 
 
   useEffect(() => {
-    const liffId = '2006989473-gqajDkdd';
+    const liffId = '2007275305-5B4p9VMY';
 
     async function initLiff() {
       try {
