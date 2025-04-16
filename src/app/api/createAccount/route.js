@@ -10,11 +10,30 @@ export async function POST(req) {
     if (nameExist.length > 0) return NextResponse.json({message: "此帳號已被創建"});
 
     const [result] = await db.query("INSERT INTO player (userId, userName, gameName) VALUES (?, ?, ?)", [userId, userName, name])
+
+    const response = await fetch('https://api.line.me/v2/bot/message/push', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.LINE_ACCESS_TOKEN}`
+      },
+      body: JSON.stringify({
+        to: "C3ec2a6b279d579771ca82d451aaf5085",
+        messages: [{
+          type: 'text',
+          text: `${userName} 成功創建帳號 ${name}`
+        }]
+      })
+    })
+
     return NextResponse.json({message: "成功創建帳號"})
+
     } catch (error) {
     console.log(`error: ${error}`)
     return NextResponse.json({message: error.message})
   }
+
+  
 }
 
 // export async function POST(req) {
