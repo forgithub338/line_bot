@@ -21,8 +21,10 @@ export default function DebugPage() {
         } else {
           const data = await liff.getProfile();
           const client = liff.isInClient();
+          const send = liff.isApiAvailable("sendMessages")
           setInClient(client);
-          localStorage.setItem("profile", JSON.stringify(data))
+          setProfile(data)
+          setCanSend(send)
         }
 
       } catch (error) {
