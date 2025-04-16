@@ -31,6 +31,18 @@ export default function CreateAccount() {
       if (!response.ok) throw new Error('發生錯誤');
 
       alert(data.message);
+
+      if (typeof window !== "undefined" && window.liff?.isApiAvailable('sendMessages')) {
+        await window.liff.sendMessages([
+          {
+            type: 'text',
+            text: `${profile.displayName} 成功新增帳號 ${gameName}`,
+          },
+        ]);
+      } else {
+        console.warn('liff.sendMessages 不可用');
+      }
+
     } catch (error) {
       console.error('Error:', error);
       alert('發生錯誤，請稍後再試。');
