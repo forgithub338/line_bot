@@ -8,23 +8,31 @@ export default function DebugPage() {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState('');
 
+
   useEffect(() => {
-    async function check() {
+    const liffId = '2006989473-gqajDkdd';
+
+    async function initLiff() {
       try {
-        await liff.init({ liffId: '2006989473-gqajDkdd' }); // 替換成你自己的 LIFF ID
+        await liff.init({ liffId });
 
-        const inClient = liff.isInClient();
-        const canSend = await liff.isApiAvailable('sendMessages');
-        const profile = await liff.getProfile();
+        if (!liff.isLoggedIn()) {
+          liff.login();
+        } else {
+          const data = await liff.getProfile();
+          const client = liff.isInClient();
+          setInClient(client);
+          localStorage.setItem("profile", JSON.stringify(data))
+        }
 
-        setInClient(inClient);
-        setCanSend(canSend);
-        setProfile(profile);
-      } catch (err) {
-        setError(err.message || JSON.stringify(err));
+      } catch (error) {
+        console.error('LIFF 初始化失敗', error);
+      } finally {
+        setLoading(false);
       }
     }
-    check();
+
+    initLiff();
   }, []);
 
   return (
@@ -32,7 +40,6 @@ export default function DebugPage() {
       <h1 className="text-xl font-bold mb-4">🔍 LIFF Debug</h1>
       {error && <p className="text-red-500">錯誤：{error}</p>}
       <p>是否在 LINE 客戶端中：{inClient ? '✅ 是' : '❌ 否'}</p>
-      <p>是否支援 sendMessages：{canSend ? '✅ 是' : '❌ 否'}</p>
       <p>使用者名稱：{profile?.displayName || '無'}</p>
       <p>使用者 ID：{profile?.userId || '無'}</p>
     </div>
