@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 export default function CreateAccount() {
   const [profile, setProfile] = useState(null);
   const [name, setName] = useState('');
+  const [league, setLeague] = useState("");
+  const [camp, setCamp] = useState("")
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('profile'));
@@ -22,6 +24,8 @@ export default function CreateAccount() {
         },
         body: JSON.stringify({
           name: name,
+          league: league,
+          camp: camp,
           userName: profile.displayName,
           userId: profile.userId,
         }),
@@ -31,25 +35,6 @@ export default function CreateAccount() {
       if (!response.ok) throw new Error('發生錯誤');
 
       alert(data.message);
-
-      // if (typeof window !== "undefined" && window.liff) {
-      //   const isClient = window.liff.isInClient?.();
-      //   const canSend = window.liff.isApiAvailable?.('sendMessages');
-  
-      //   if (isClient && canSend) {
-      //     await window.liff.sendMessages([
-      //       {
-      //         type: 'text',
-      //         text: `${profile.displayName} 成功新增帳號 ${gameName}`,
-      //       },
-      //     ]);
-      //     alert('訊息已發送 🎉');
-      //   } else {
-      //     alert(`無法發送訊息：isInClient=${isClient}, canSend=${canSend}`);
-      //   }
-      // } else {
-      //   alert('window.liff 尚未載入');
-      // }
 
     } catch (error) {
       alert('Error:', error);
@@ -62,15 +47,40 @@ export default function CreateAccount() {
       {profile ? (
         <div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <label className="font-bold">名稱</label>
+            <label className="font-bold">遊戲名稱</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="border border-gray-300 rounded px-2 py-1"
-              placeholder="請輸入名稱"
+              placeholder="請輸入遊戲名稱"
               required
             />
+            <label>聯盟</label>
+            <select
+              value={league}
+              onChange={(e) => setLeague(e.target.value)}
+              className="border border-gray-300 rounded px-2 py-1"
+              required
+            >
+              <option value="">請選擇聯盟</option>
+              <option value="主盟">主盟</option>
+              <option value="分盟">分盟</option>
+            </select>
+            <label>分營</label>
+            <select
+              value={camp}
+              onChange={(e) => setCamp(e.target.value)}
+              className="border border-gray-300 rounded px-2 py-1"
+              required
+            >
+              <option value="">請選擇分營</option>
+              <option value="陷陣營">陷陣營</option>
+              <option value="虎衛營">虎衛營</option>
+              <option value="先登營">先登營</option>
+              <option value="神機營">神機營</option>
+            </select>
+
             <button
               type="submit"
               className="bg-blue-700 text-white px-4 py-2 rounded"

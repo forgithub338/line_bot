@@ -2,14 +2,14 @@ import { createConnection } from "@/../lib/connectDB"
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const {userId, userName, name} = await req.json();
+  const {userId, userName, name, league, camp} = await req.json();
 
   try {
     const db = await createConnection();
     const [nameExist] = await db.query("SELECT * FROM player WHERE gameName = ?", [name]);
     if (nameExist.length > 0) return NextResponse.json({message: "此帳號已被創建"});
 
-    const [result] = await db.query("INSERT INTO player (userId, userName, gameName) VALUES (?, ?, ?)", [userId, userName, name])
+    const [result] = await db.query("INSERT INTO player (userId, userName, gameName, league, camp) VALUES (?, ?, ?)", [userId, userName, name, league, camp])
 
     const response = await fetch('https://api.line.me/v2/bot/message/push', {
       method: 'POST',
@@ -21,7 +21,7 @@ export async function POST(req) {
         to: "Ca7da83ce4d91d12a42990d292c131e36",
         messages: [{
           type: 'text',
-          text: `${userName} 成功創建帳號 ${name}`
+          text: `${userName} 成功創建帳號 ${name} \n所屬聯盟： ${league} \n所屬分營： ${camp}`
         }]
       })
     })
