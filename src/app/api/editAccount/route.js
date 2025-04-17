@@ -48,7 +48,7 @@ export async function POST(req) {
         to: "C6fed24600ca5ed14a70c98452b817197",
         messages: [{
           type: 'text',
-          text: `${userName} 將帳號 ${oldGameName} 更名為 ${newGameName}\n聯盟： ${league} 分營： ${camp}`
+          text: `${userName} 將帳號 ${oldGameName} 更名為 ${newGameName}\n進入聯盟： ${league}\n進入分營： ${camp}`
         }]
       })
     })

@@ -51,7 +51,7 @@ export async function POST(req) {
         to: "C6fed24600ca5ed14a70c98452b817197",
         messages: [{
           type: 'text',
-          text: `${userName} 成功刪除帳號 ${gameName} \n原聯盟：${league} 分營${camp}`
+          text: `${userName} 成功刪除帳號 ${gameName} \n原聯盟：${league} \n原分營：${camp}`
         }]
       })
     })
