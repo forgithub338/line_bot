@@ -35,6 +35,8 @@ export async function POST(req) {
   try {
     const db = await createConnection();
     const [result] = await db.query("DELETE FROM player WHERE gameName = ?;", [gameName])
+    const league = result[0].league
+    const camp = result[0].camp
 
     await db.commit();
 
@@ -45,10 +47,10 @@ export async function POST(req) {
         'Authorization': `Bearer ${process.env.LINE_ACCESS_TOKEN}`
       },
       body: JSON.stringify({
-        to: "Ca7da83ce4d91d12a42990d292c131e36",
+        to: "C6fed24600ca5ed14a70c98452b817197",
         messages: [{
           type: 'text',
-          text: `${userName} 成功刪除帳號 ${gameName}`
+          text: `${userName} 成功刪除帳號 ${gameName} \n原聯盟：${league} 分營${camp}`
         }]
       })
     })

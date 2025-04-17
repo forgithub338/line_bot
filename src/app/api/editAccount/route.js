@@ -30,11 +30,11 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  const {userName, oldGameName, newGameName} = await req.json();
+  const {userName, oldGameName, newGameName, league, camp} = await req.json();
 
   try {
     const db = await createConnection();
-    const [result] = await db.query("UPDATE player SET gameName = ? Where gameName = ?", [newGameName, oldGameName])
+    const [result] = await db.query("UPDATE player SET gameName = ?, league = ?, camp = ? Where gameName = ?", [newGameName, league, camp, oldGameName])
 
     await db.commit();
 
@@ -45,10 +45,10 @@ export async function POST(req) {
         'Authorization': `Bearer ${process.env.LINE_ACCESS_TOKEN}`
       },
       body: JSON.stringify({
-        to: "Ca7da83ce4d91d12a42990d292c131e36",
+        to: "C6fed24600ca5ed14a70c98452b817197",
         messages: [{
           type: 'text',
-          text: `${userName} 將帳號 ${oldGameName} 更名為 ${newGameName}`
+          text: `${userName} 將帳號 ${oldGameName} 更名為 ${newGameName}\n聯盟： ${league} 分營： ${camp}`
         }]
       })
     })

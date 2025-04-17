@@ -7,6 +7,8 @@ export default function EditAccount() {
   const [gameNames, setGameNames] = useState([])
   const [selectedGame, setSelectedGame] = useState('')
   const [newGameName, setnewGameName] = useState('')
+  const [league, setLeague] = useState("")
+  const [camp, setCamp] = useState("")
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('profile') || 'null')
@@ -50,6 +52,8 @@ export default function EditAccount() {
           userName: profile.displayName,
           oldGameName: selectedGame,
           newGameName: newGameName,
+          league: league,
+          camp: camp
         }),
       })
 
@@ -99,6 +103,30 @@ export default function EditAccount() {
                 onChange={(e) => setnewGameName(e.target.value)}
                 className="border rounded p-2 mt-2 block"
               />
+              <label>聯盟</label>
+            <select
+              value={league}
+              onChange={(e) => setLeague(e.target.value)}
+              className="border border-gray-300 rounded px-2 py-1"
+              required
+            >
+              <option value="">請選擇聯盟</option>
+              <option value="主盟">主盟</option>
+              <option value="分盟">分盟</option>
+            </select>
+            <label>分營</label>
+            <select
+              value={camp}
+              onChange={(e) => setCamp(e.target.value)}
+              className="border border-gray-300 rounded px-2 py-1"
+              required
+            >
+              <option value="">請選擇分營</option>
+              <option value="陷陣營">陷陣營</option>
+              <option value="虎衛營">虎衛營</option>
+              <option value="先登營">先登營</option>
+              <option value="神機營">神機營</option>
+            </select>
 
               <button
                 onClick={handleUpdate}
