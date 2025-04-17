@@ -1,31 +1,24 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 
 export default function DeleteAccount() {
   const [profile, setProfile] = useState(null)
   const [gameNames, setGameNames] = useState([])
   const [selectedGame, setSelectedGame] = useState('')
-  const [newGameName, setnewGameName] = useState('')
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('profile') || 'null')
     setProfile(data)
 
     async function fetchGameNames() {
-      if (data && data.userId) {
+      if (data?.userId) {
         try {
-          const response = await fetch(`/api/deleteAccount?userId=${data.userId}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-
-          const result = await response.json()
-          setGameNames(result.data) // ✅ 抓 data 陣列
-        } catch (error) {
-          console.error('Error fetching games:', error)
+          const res = await fetch(`/api/deleteAccount?userId=${data.userId}`)
+          const result = await res.json()
+          setGameNames(result.data)
+        } catch (err) {
+          console.error('取得遊戲名稱失敗：', err)
         }
       }
     }
@@ -41,62 +34,60 @@ export default function DeleteAccount() {
     if (!selectedGame) return
 
     try {
-      const response = await fetch('/api/deleteAccount', {
+      const res = await fetch('/api/deleteAccount', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userName: profile.displayName,
           gameName: selectedGame,
         }),
       })
 
-      const result = await response.json()
+      const result = await res.json()
       alert(result.message || '刪除成功！')
-
-      // 可選：更新資料
-      setnewGameName('')
-    } catch (error) {
-      console.error('刪除失敗:', error)
+    } catch (err) {
+      console.error('刪除失敗：', err)
     }
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Edit Account</h1>
+    <div className="bg-blue-50 min-h-screen px-4 py-6 flex justify-center items-start">
+      <div className="bg-white rounded-xl shadow-md w-full max-w-sm p-6">
+        <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">刪除帳號</h1>
 
-      {profile && (
-        <>
-          <p className="mb-2">Hello, {profile.name}</p>
+        {profile && (
+          <>
+            <p className="text-center text-gray-700 mb-6">
+              你好，<span className="font-semibold text-blue-700">{profile.name}</span>
+            </p>
 
-          <label htmlFor="gameSelect" className="block mb-2">
-            Select a game:
-          </label>
-          <select
-            id="gameSelect"
-            value={selectedGame}
-            onChange={handleGameChange}
-            className="border rounded p-2 mb-4"
-          >
-            <option value="">-- Choose a game --</option>
-            {gameNames.map((game, idx) => (
-              <option key={idx} value={game.gameName}>
-                {game.gameName}
-              </option>
-            ))}
-          </select>
+            <div className="mb-4">
+              <label className="block text-base font-medium text-blue-700 mb-1">選擇遊戲</label>
+              <select
+                value={selectedGame}
+                onChange={handleGameChange}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
+              >
+                <option value="">-- 選擇遊戲 --</option>
+                {gameNames.map((game, idx) => (
+                  <option key={idx} value={game.gameName}>
+                    {game.gameName}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {selectedGame && (
+            {selectedGame && (
               <button
                 onClick={handleDelete}
-                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="w-full bg-red-500 text-white py-3 rounded-lg text-base font-semibold hover:bg-red-600 transition-colors"
               >
                 確認刪除帳號
               </button>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }

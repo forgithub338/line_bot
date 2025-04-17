@@ -1,33 +1,27 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 
 export default function EditAccount() {
   const [profile, setProfile] = useState(null)
   const [gameNames, setGameNames] = useState([])
   const [selectedGame, setSelectedGame] = useState('')
-  const [newGameName, setnewGameName] = useState('')
-  const [league, setLeague] = useState("")
-  const [camp, setCamp] = useState("")
+  const [newGameName, setNewGameName] = useState('')
+  const [league, setLeague] = useState('')
+  const [camp, setCamp] = useState('')
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('profile') || 'null')
     setProfile(data)
 
     async function fetchGameNames() {
-      if (data && data.userId) {
+      if (data?.userId) {
         try {
-          const response = await fetch(`/api/editAccount?userId=${data.userId}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-
-          const result = await response.json()
-          setGameNames(result.data) // ✅ 抓 data 陣列
-        } catch (error) {
-          console.error('Error fetching games:', error)
+          const res = await fetch(`/api/editAccount?userId=${data.userId}`)
+          const result = await res.json()
+          setGameNames(result.data)
+        } catch (err) {
+          console.error('取得遊戲名稱失敗：', err)
         }
       }
     }
@@ -35,109 +29,107 @@ export default function EditAccount() {
     fetchGameNames()
   }, [])
 
-  const handleGameChange = (e) => {
-    setSelectedGame(e.target.value)
-  }
-
   const handleUpdate = async () => {
     if (!selectedGame || !newGameName) return
 
     try {
-      const response = await fetch('/api/editAccount', {
+      const res = await fetch('/api/editAccount', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userName: profile.displayName,
           oldGameName: selectedGame,
-          newGameName: newGameName,
-          league: league,
-          camp: camp
+          newGameName,
+          league,
+          camp,
         }),
       })
 
-      const result = await response.json()
+      const result = await res.json()
       alert(result.message || '更新成功！')
-
-      // 可選：更新資料
-      setnewGameName('')
-    } catch (error) {
-      console.error('更新失敗:', error)
+      setNewGameName('')
+    } catch (err) {
+      console.error('更新失敗：', err)
     }
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Edit Account</h1>
+    <div className="bg-blue-50 min-h-screen px-4 py-6 flex justify-center items-start">
+      <div className="bg-white rounded-xl shadow-md w-full max-w-sm p-6">
+        <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">編輯帳號</h1>
 
-      {profile && (
-        <>
-          <p className="mb-2">Hello, {profile.name}</p>
+        {profile && (
+          <>
+            <p className="text-center text-gray-700 mb-6">
+              你好，<span className="font-semibold text-blue-700">{profile.name}</span>
+            </p>
 
-          <label htmlFor="gameSelect" className="block mb-2">
-            Select a game:
-          </label>
-          <select
-            id="gameSelect"
-            value={selectedGame}
-            onChange={handleGameChange}
-            className="border rounded p-2 mb-4"
-          >
-            <option value="">-- Choose a game --</option>
-            {gameNames.map((game, idx) => (
-              <option key={idx} value={game.gameName}>
-                {game.gameName}
-              </option>
-            ))}
-          </select>
-
-          {selectedGame && (
-            <div className="mt-4">
-              <p>You selected: <strong>{selectedGame}</strong></p>
-
-              <input
-                type="text"
-                placeholder="New user name"
-                value={newGameName}
-                onChange={(e) => setnewGameName(e.target.value)}
-                className="border rounded p-2 mt-2 block"
-              />
-              <label>聯盟</label>
-            <select
-              value={league}
-              onChange={(e) => setLeague(e.target.value)}
-              className="border border-gray-300 rounded px-2 py-1"
-              required
-            >
-              <option value="">請選擇聯盟</option>
-              <option value="主盟">主盟</option>
-              <option value="分盟">分盟</option>
-            </select>
-            <label>分營</label>
-            <select
-              value={camp}
-              onChange={(e) => setCamp(e.target.value)}
-              className="border border-gray-300 rounded px-2 py-1"
-              required
-            >
-              <option value="">請選擇分營</option>
-              <option value="陷陣營">陷陣營</option>
-              <option value="虎衛營">虎衛營</option>
-              <option value="先登營">先登營</option>
-              <option value="神機營">神機營</option>
-            </select>
-
-              <button
-                onClick={handleUpdate}
-                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            <div className="mb-4">
+              <label className="block text-base font-medium text-blue-700 mb-1">選擇遊戲</label>
+              <select
+                value={selectedGame}
+                onChange={(e) => setSelectedGame(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
               >
-                更新
-              </button>
+                <option value="">-- 選擇遊戲 --</option>
+                {gameNames.map((game, idx) => (
+                  <option key={idx} value={game.gameName}>{game.gameName}</option>
+                ))}
+              </select>
             </div>
-          )}
-        </>
-      )}
+
+            {selectedGame && (
+              <>
+                <div className="mb-4">
+                  <label className="block text-base font-medium text-blue-700 mb-1">新的使用者名稱</label>
+                  <input
+                    type="text"
+                    value={newGameName}
+                    onChange={(e) => setNewGameName(e.target.value)}
+                    placeholder="輸入新的使用者名稱"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-base font-medium text-blue-700 mb-1">聯盟</label>
+                  <select
+                    value={league}
+                    onChange={(e) => setLeague(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
+                  >
+                    <option value="">請選擇聯盟</option>
+                    <option value="主盟">主盟</option>
+                    <option value="分盟">分盟</option>
+                  </select>
+                </div>
+
+                <div className="mb-6">
+                  <label className="block text-base font-medium text-blue-700 mb-1">分營</label>
+                  <select
+                    value={camp}
+                    onChange={(e) => setCamp(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
+                  >
+                    <option value="">請選擇分營</option>
+                    <option value="陷陣營">陷陣營</option>
+                    <option value="虎衛營">虎衛營</option>
+                    <option value="先登營">先登營</option>
+                    <option value="神機營">神機營</option>
+                  </select>
+                </div>
+
+                <button
+                  onClick={handleUpdate}
+                  className="w-full bg-blue-600 text-white py-3 rounded-lg text-base font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  確認更新
+                </button>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }
