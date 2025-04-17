@@ -9,7 +9,7 @@ export async function POST(req) {
     const [nameExist] = await db.query("SELECT * FROM player WHERE gameName = ?", [name]);
     if (nameExist.length > 0) return NextResponse.json({message: "此帳號已被創建"});
 
-    const [result] = await db.query("INSERT INTO player (userId, userName, gameName, league, camp) VALUES (?, ?, ?)", [userId, userName, name, league, camp])
+    const [result] = await db.query("INSERT INTO player (userId, userName, gameName, league, camp) VALUES (?, ?, ?, ?, ?)", [userId, userName, name, league, camp])
 
     const response = await fetch('https://api.line.me/v2/bot/message/push', {
       method: 'POST',
