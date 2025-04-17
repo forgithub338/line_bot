@@ -58,7 +58,7 @@ export default function CreateAccount() {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-lg"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-lg text-gray-800 placeholder-gray-500"
                   placeholder="請輸入遊戲名稱"
                   required
                 />
@@ -72,7 +72,7 @@ export default function CreateAccount() {
                   id="league"
                   value={league}
                   onChange={(e) => setLeague(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-lg"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-lg text-gray-800"
                   required
                 >
                   <option value="">請選擇聯盟</option>
@@ -89,7 +89,7 @@ export default function CreateAccount() {
                   id="camp"
                   value={camp}
                   onChange={(e) => setCamp(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-lg"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-lg text-gray-800"
                   required
                 >
                   <option value="">請選擇分營</option>

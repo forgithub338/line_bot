@@ -69,7 +69,7 @@ export default function EditAccount() {
               <select
                 value={selectedGame}
                 onChange={(e) => setSelectedGame(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base text-gray-800"
               >
                 <option value="">-- 選擇遊戲 --</option>
                 {gameNames.map((game, idx) => (
@@ -87,7 +87,7 @@ export default function EditAccount() {
                     value={newGameName}
                     onChange={(e) => setNewGameName(e.target.value)}
                     placeholder="輸入新的使用者名稱"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base text-gray-800"
                   />
                 </div>
 
@@ -96,7 +96,7 @@ export default function EditAccount() {
                   <select
                     value={league}
                     onChange={(e) => setLeague(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base text-gray-800"
                   >
                     <option value="">請選擇聯盟</option>
                     <option value="主盟">主盟</option>
@@ -109,7 +109,7 @@ export default function EditAccount() {
                   <select
                     value={camp}
                     onChange={(e) => setCamp(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-base text-gray-800"
                   >
                     <option value="">請選擇分營</option>
                     <option value="陷陣營">陷陣營</option>
