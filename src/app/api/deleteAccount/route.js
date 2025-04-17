@@ -34,9 +34,10 @@ export async function POST(req) {
 
   try {
     const db = await createConnection();
-    const [result] = await db.query("DELETE FROM player WHERE gameName = ?;", [gameName])
-    const league = result[0].league
-    const camp = result[0].camp
+    const [rows] = await db.query("SELECT * FROM player WHERE gameName = ?", [gameName])
+    const [result] = await db.query("DELETE FROM player WHERE gameName = ?", [gameName])
+    const league = rows[0].league
+    const camp = rows[0].camp
 
     await db.commit();
 
